@@ -11,7 +11,8 @@ To install just the dynamic library
 
 `make lib ; make install-lib`
 
-To install just program
+To install just the program
+
 `make pfmt ; make install-exe`
 
 ## CLI Usage
