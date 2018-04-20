@@ -24,7 +24,7 @@ the top left of the screen.
 
 ### -f <fg-color> and -b <bg-color>
 The foreground/background color to be used, in 24-bit hexadecimal format.
-For example, `ff0000` is red, `00ff00` is blue, and `0000ff` is red.
+For example, `ff0000` is red, `00ff00` is green, and `0000ff` is blue.
 
 ### -c
 Clear the screen before printing.
