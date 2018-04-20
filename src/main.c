@@ -29,6 +29,7 @@ int parseul(const char *str, uint32_t *res, int base)
     return 0;
 }
 
+/* getopt.h argument flags */
 enum {
     NO_ARG = 0,
     REQ_ARG = 1,
@@ -47,10 +48,6 @@ static struct option long_opts[] = {
 
 int main(int argc, char **argv)
 {
-    // TODO also format stdin
-    if(!isatty(0)){
-        fatal("input is not a tty");
-    }
     /* default attributes */
     pfmt_attr_t attrs = {
         .fg = { .rgb = 0x00ffffff },
@@ -124,8 +121,18 @@ int main(int argc, char **argv)
         pfmt_set_color(&attrs.bg, BG, out);
     }
     /* print the arguments */
-    for(; optind < argc; ++optind){
-        puts(argv[optind]);
+    if(optind < argc){
+        for(; optind < argc; ++optind){
+            puts(argv[optind]);
+        }
+    }else{
+        size_t page_size = getpagesize();
+        char buf[page_size];
+        setbuf(stdin, NULL);
+        setbuf(stdout, NULL);
+        while(fgets(buf, page_size, stdin)){
+            fputs(buf, stdout);
+        }
     }
     /* if we set colors, reset them now */
     if(flags.bg || flags.fg){
