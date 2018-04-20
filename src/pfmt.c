@@ -5,14 +5,14 @@
 
 /* prepare for codes */
 
-void start_attrs(output_builder_t out)
+static inline void start_attrs(output_builder_t out)
 {
     out("\x1b[");
 }
 
 /* color manipulation */
 
-void color_seq(const color_t *color, int mode, output_builder_t out)
+static void color_seq(const color_t *color, int mode, output_builder_t out)
 {
     const char *fmt = "48;2;%d;%d;%dm";
     if(mode == FG){
@@ -21,7 +21,7 @@ void color_seq(const color_t *color, int mode, output_builder_t out)
     out(fmt, color->r, color->g, color->b);
 }
 
-void color_reset(output_builder_t out)
+static void color_reset(output_builder_t out)
 {
     out("0m");
 }
@@ -32,9 +32,15 @@ void set_color(const color_t *color, int mode, output_builder_t out)
     color_seq(color, mode, out);
 }
 
+void reset_color(output_builder_t out)
+{
+    start_attrs(out);
+    color_reset(out);
+}
+
 /* position manipulation */
 
-void move(const pos_t *to, output_builder_t out)
+static void move(const pos_t *to, output_builder_t out)
 {
     out("%lu;%luH", to->y + 1, to->x + 1);
 }
@@ -64,19 +70,14 @@ void reset(output_builder_t out)
 
 void set_attrs(const attr_t *attrs, output_builder_t out)
 {
-    /* set color attributes */
     /* fg color */
-    start_attrs(out);
-    color_seq(&attrs->fg, FG, out);
+    set_color(&attrs->fg, FG, out);
     /* bg color */
-    start_attrs(out);
-    color_seq(&attrs->bg, BG, out);
+    set_color(&attrs->bg, BG, out);
     /* move to position */
-    start_attrs(out);
-    move(&attrs->pos, out);
+    set_position(&attrs->pos, out);
 }
 
-/* print a formatted string with attributes to a FILE * */
 void fpprintf(FILE *file, const attr_t *attrs, const char *fmt, ...)
 {
     /* the printer for the attributes */

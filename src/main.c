@@ -113,8 +113,7 @@ int main(int argc, char **argv)
     }
     /* if we set colors, reset them now */
     if(flags.bg || flags.fg){
-        start_attrs(out);
-        color_reset(out);
+        reset_color(out);
     }
     return 0;
 }

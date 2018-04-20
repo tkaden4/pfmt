@@ -2,7 +2,7 @@
 
 #include<stdint.h>
 
-/* 24-bit color */
+/* 24-bit color struct */
 typedef struct {
     union {
         struct {
@@ -27,7 +27,7 @@ typedef struct {
     color_t bg;
 } attr_t;
 
-/* foreground or background */
+/* color mode selectors */
 enum {
     FG,
     BG
@@ -36,11 +36,17 @@ enum {
 /* callback for writing output */
 typedef void(*output_builder_t)(const char *, ...);
 
-void start_attrs(output_builder_t);
-
+/* print a formatted string with attributes */
+void fpprintf(FILE *file, const attr_t *attrs, const char *fmt, ...);
+/* change all the output attributes at once */
+void set_attrs(const attr_t *attrs, output_builder_t out);
+/* set the color */
 void set_color(const color_t *, int, output_builder_t);
-void color_reset(output_builder_t);
-
+/* revert to terminal colors */
+void reset_color(output_builder_t);
+/* set the cursor position */
 void set_position(const pos_t *, output_builder_t);
-
+/* reset the terminal to its initial state */
 void reset(output_builder_t);
+/* clear the screen */
+void clear(output_builder_t out);

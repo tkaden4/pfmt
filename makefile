@@ -20,10 +20,10 @@ endif
 
 .PHONY: clean tst run install profile
 
-all : lib pfmt
+all : lib exe
 
 lib : $(LIB)
-pfmt : $(EXE)
+exe : $(EXE)
 
 $(EXE) : $(OBJECTS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
