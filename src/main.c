@@ -36,7 +36,7 @@ int main(int argc, char **argv)
         fatal("input is not a tty");
     }
     /* default attributes */
-    attr_t attrs = {
+    pfmt_attr_t attrs = {
         .fg = { .rgb = 0x00ffffff },
         .bg = { .rgb = 0x00000000 },
         .pos = { .x = 10, .y = 0 }
@@ -90,22 +90,22 @@ int main(int argc, char **argv)
             break;
         }
     }
-    output_builder_t out = (output_builder_t)printf;
+    pfmt_builder_t out = pfmt_stdout_builder;
     /* clear the screen, if necessary */
     if(flags.clr){
-        reset(out);
+        pfmt_reset(out);
     }
     /* make sure both parts of position are specified */
     if(flags.pos){
-        set_position(&attrs.pos, out);
+        pfmt_set_position(&attrs.pos, out);
     }
     /* set foreground color */
     if(flags.fg){
-        set_color(&attrs.fg, FG, out);
+        pfmt_set_color(&attrs.fg, FG, out);
     }
     /* set background color */
     if(flags.bg){
-        set_color(&attrs.bg, BG, out);
+        pfmt_set_color(&attrs.bg, BG, out);
     }
     /* print the arguments */
     for(; optind < argc; ++optind){
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     }
     /* if we set colors, reset them now */
     if(flags.bg || flags.fg){
-        reset_color(out);
+        pfmt_reset_color(out);
     }
     return 0;
 }

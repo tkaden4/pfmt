@@ -5,14 +5,14 @@
 
 /* prepare for codes */
 
-static inline void start_attrs(output_builder_t out)
+static inline void start_attrs(pfmt_builder_t out)
 {
     out("\x1b[");
 }
 
 /* color manipulation */
 
-static void color_seq(const color_t *color, int mode, output_builder_t out)
+static void color_seq(const pfmt_color_t *color, int mode, pfmt_builder_t out)
 {
     const char *fmt = "48;2;%d;%d;%dm";
     if(mode == FG){
@@ -21,18 +21,18 @@ static void color_seq(const color_t *color, int mode, output_builder_t out)
     out(fmt, color->r, color->g, color->b);
 }
 
-static void color_reset(output_builder_t out)
+static void color_reset(pfmt_builder_t out)
 {
     out("0m");
 }
 
-void set_color(const color_t *color, int mode, output_builder_t out)
+void pfmt_set_color(const pfmt_color_t *color, int mode, pfmt_builder_t out)
 {
     start_attrs(out);
     color_seq(color, mode, out);
 }
 
-void reset_color(output_builder_t out)
+void pfmt_reset_color(pfmt_builder_t out)
 {
     start_attrs(out);
     color_reset(out);
@@ -40,12 +40,12 @@ void reset_color(output_builder_t out)
 
 /* position manipulation */
 
-static void move(const pos_t *to, output_builder_t out)
+static void move(const pfmt_pos_t *to, pfmt_builder_t out)
 {
     out("%lu;%luH", to->y + 1, to->x + 1);
 }
 
-void set_position(const pos_t *to, output_builder_t out)
+void pfmt_set_position(const pfmt_pos_t *to, pfmt_builder_t out)
 {
     start_attrs(out);
     move(to, out);
@@ -53,32 +53,30 @@ void set_position(const pos_t *to, output_builder_t out)
 
 /* misc. utilities */
 
-void clear(output_builder_t out)
+void pfmt_clear(pfmt_builder_t out)
 {
     start_attrs(out);
     out("2J");
 }
 
-void reset(output_builder_t out)
+void pfmt_reset(pfmt_builder_t out)
 {
-    start_attrs(out);
-    color_reset(out);
-    start_attrs(out);
-    move(&(pos_t){ 0, 0 }, out);
-    clear(out);
+    pfmt_reset_color(out);
+    pfmt_set_position(&(pfmt_pos_t){ 0, 0 }, out);
+    pfmt_clear(out);
 }
 
-void set_attrs(const attr_t *attrs, output_builder_t out)
+void pfmt_set_attrs(const pfmt_attr_t *attrs, pfmt_builder_t out)
 {
     /* fg color */
-    set_color(&attrs->fg, FG, out);
+    pfmt_set_color(&attrs->fg, FG, out);
     /* bg color */
-    set_color(&attrs->bg, BG, out);
+    pfmt_set_color(&attrs->bg, BG, out);
     /* move to position */
-    set_position(&attrs->pos, out);
+    pfmt_set_position(&attrs->pos, out);
 }
 
-void fpprintf(FILE *file, const attr_t *attrs, const char *fmt, ...)
+void fpprintf(FILE *file, const pfmt_attr_t *attrs, const char *fmt, ...)
 {
     /* the printer for the attributes */
     void out(const char *str, ...)
@@ -92,7 +90,7 @@ void fpprintf(FILE *file, const attr_t *attrs, const char *fmt, ...)
     va_start(args, fmt);
 
     /* print attributes and formatted text */
-    set_attrs(attrs, out);
+    pfmt_set_attrs(attrs, out);
     vfprintf(file, fmt, args);
 
     va_end(args);

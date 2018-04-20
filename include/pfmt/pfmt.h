@@ -12,20 +12,20 @@ typedef struct {
         };
         uint32_t rgb;
     };
-} color_t;
+} pfmt_color_t;
 
 /* screen position */
 typedef struct {
     uint32_t x;
     uint32_t y;
-} pos_t;
+} pfmt_pos_t;
 
 /* screen attributes */
 typedef struct {
-    pos_t pos;
-    color_t fg;
-    color_t bg;
-} attr_t;
+    pfmt_pos_t pos;
+    pfmt_color_t fg;
+    pfmt_color_t bg;
+} pfmt_attr_t;
 
 /* color mode selectors */
 enum {
@@ -34,19 +34,21 @@ enum {
 };
 
 /* callback for writing output */
-typedef void(*output_builder_t)(const char *, ...);
+typedef void(*pfmt_builder_t)(const char *, ...);
+
+#define pfmt_stdout_builder ((pfmt_builder_t)printf)
 
 /* print a formatted string with attributes */
-void fpprintf(FILE *file, const attr_t *attrs, const char *fmt, ...);
+void fpprintf(FILE *, const pfmt_attr_t *, const char *, ...);
 /* change all the output attributes at once */
-void set_attrs(const attr_t *attrs, output_builder_t out);
+void pfmt_set_attrs(const pfmt_attr_t *, pfmt_builder_t);
 /* set the color */
-void set_color(const color_t *, int, output_builder_t);
+void pfmt_set_color(const pfmt_color_t *, int, pfmt_builder_t);
 /* revert to terminal colors */
-void reset_color(output_builder_t);
+void pfmt_reset_color(pfmt_builder_t);
 /* set the cursor position */
-void set_position(const pos_t *, output_builder_t);
+void pfmt_set_position(const pfmt_pos_t *, pfmt_builder_t);
 /* reset the terminal to its initial state */
-void reset(output_builder_t);
+void pfmt_reset(pfmt_builder_t);
 /* clear the screen */
-void clear(output_builder_t out);
+void pfmt_clear(pfmt_builder_t);
