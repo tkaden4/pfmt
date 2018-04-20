@@ -36,15 +36,22 @@ $(LIB) : $(LIB_OBJECTS)
 
 install : install-exe install-lib
 
+uninstall : uninstall-exe uninstall-lib
+
 install-exe :
 	install -s $(EXE) /usr/local/bin/$(NAME)
 	# TODO no manfile yet
 	# cp $(NAME).1 /usr/local/man/man1/
 	# mandb
+
+uninstall-exe:
+	rm /usr/local/bin/$(NAME)
 	
 install-lib :
 	cp lib/$(LIB) /usr/local/lib/$(LIB)
 
+uninstall-lib:
+	rm /usr/local/lib/$(LIB)
 run :
 	./pfmt -x 10 -y 10 -b ff0000 -f 00ff00 "Hello!"
 

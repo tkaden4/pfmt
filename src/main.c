@@ -22,19 +22,25 @@ int parseul(const char *str, uint32_t *res, int base)
 {
     char *end = NULL;
     uint32_t ul = strtoul(str, &end, base);
-    if(*end){
+    if(end && *end){
         return 1;
     }
     *res = ul;
     return 0;
 }
 
-struct option long_opts[] = {
-    { "clear",  0, NULL,    'c' },
-    { "xpos",   0, NULL,    'x' },
-    { "ypos",   0, NULL,    'y' },
-    { "fg",     0, NULL,    'f' },
-    { "bg",     0, NULL,    'b' },
+enum {
+    NO_ARG = 0,
+    REQ_ARG = 1,
+    OPT_ARG = 2
+};
+
+static struct option long_opts[] = {
+    { "clear", NO_ARG,  NULL, 'c' },
+    { "xpos",  REQ_ARG, NULL, 'x' },
+    { "ypos",  REQ_ARG, NULL, 'y' },
+    { "fg",    REQ_ARG, NULL, 'f' },
+    { "bg",    REQ_ARG, NULL, 'b' },
     /* sentinel value */
     { NULL,     0, NULL, 0 }
 };
@@ -63,6 +69,7 @@ int main(int argc, char **argv)
         0,
         0
     };
+
     int opt = EOF;
     while((opt = getopt_long(argc, argv, "cx:y:f:b:", long_opts, NULL)) != EOF){
         switch(opt){
