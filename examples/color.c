@@ -1,5 +1,7 @@
 #include<pfmt/pfmt.h>
 
+#include<stdio.h>
+
 int main()
 {
     pfmt_color_t fg = { .r = 0xff, .g = 0xff, .b = 0xff };
