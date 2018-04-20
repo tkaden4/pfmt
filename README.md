@@ -18,6 +18,8 @@ To install just the program
 ## CLI Usage
 `pfmt [-x|--xpos <xpos> -y|--ypos <ypos>] [-f|--fg <fg-color>] [-b|--bg <bg-color>] [-c|--clear] [strings...]`
 
+If `strings...` is not supplied, input will be read from stdin.
+
 ### -x|--xpos -y|--ypos
 The x and y position for the start of the text, starting at 0 from
 the top left of the screen.
