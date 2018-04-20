@@ -2,6 +2,8 @@
 
 A command line utility and library for setting text attributes.
 
+See `examples/` for examples.
+
 ## Build and Install
 To install both library and program
 
