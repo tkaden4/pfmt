@@ -118,10 +118,6 @@ int main(int argc, char **argv)
     if(flags.pos){
         pfmt_set_position(&attrs.pos, out);
     }
-    /* kill the line, if necessary */
-    if(flags.kill){
-        pfmt_clear_line(out);
-    }
     /* set foreground color */
     if(flags.fg){
         pfmt_set_color(&attrs.fg, FG, out);
@@ -129,6 +125,10 @@ int main(int argc, char **argv)
     /* set background color */
     if(flags.bg){
         pfmt_set_color(&attrs.bg, BG, out);
+    }
+    /* kill the line, if necessary */
+    if(flags.kill){
+        pfmt_clear_line(out);
     }
     /* print the arguments */
     if(optind < argc){
