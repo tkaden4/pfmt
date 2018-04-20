@@ -16,17 +16,17 @@ To install just the program
 `make pfmt ; make install-exe`
 
 ## CLI Usage
-`pfmt [-x <xpos> -y <ypos>] [-f <fg-color>] [-b <bg-color>] [-c] [strings...]`
+`pfmt [-x|--xpos <xpos> -y|--ypos <ypos>] [-f|--fg <fg-color>] [-b|--bg <bg-color>] [-c|--clear] [strings...]`
 
-### -x <xpos> -y <ypos>
+### -x|--xpos -y|--ypos
 The x and y position for the start of the text, starting at 0 from
 the top left of the screen.
 
-### -f <fg-color> and -b <bg-color>
+### -f|--fg and -b|--bg
 The foreground/background color to be used, in 24-bit hexadecimal format.
 For example, `ff0000` is red, `00ff00` is green, and `0000ff` is blue.
 
-### -c
+### -c|--clear
 Clear the screen before printing.
 
 ### strings...

@@ -29,6 +29,16 @@ int parseul(const char *str, uint32_t *res, int base)
     return 0;
 }
 
+struct option long_opts[] = {
+    { "clear",  0, NULL,    'c' },
+    { "xpos",   0, NULL,    'x' },
+    { "ypos",   0, NULL,    'y' },
+    { "fg",     0, NULL,    'f' },
+    { "bg",     0, NULL,    'b' },
+    /* sentinel value */
+    { NULL,     0, NULL, 0 }
+};
+
 int main(int argc, char **argv)
 {
     // TODO also format stdin
@@ -53,9 +63,8 @@ int main(int argc, char **argv)
         0,
         0
     };
-    /* TODO move to sto* class of conversion functions */
     int opt = EOF;
-    while((opt = getopt(argc, argv, "cx:y:f:b:")) != EOF){
+    while((opt = getopt_long(argc, argv, "cx:y:f:b:", long_opts, NULL)) != EOF){
         switch(opt){
         case 'c':
             flags.clr = 1;
