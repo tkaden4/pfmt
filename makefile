@@ -20,7 +20,10 @@ endif
 
 .PHONY: clean tst run install profile
 
-all: $(EXE) $(LIB)
+all : lib pfmt
+
+lib : $(LIB)
+pfmt : $(EXE)
 
 $(EXE) : $(OBJECTS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
@@ -31,19 +34,19 @@ $(LIB_OBJECTS): $(LIB_SOURCES)
 $(LIB) : $(LIB_OBJECTS)
 	$(CC) -shared -o lib/$@ $^
 
-install: install-exe install-lib
+install : install-exe install-lib
 
-install-exe:
+install-exe :
 	install -s $(EXE) /usr/local/bin/$(NAME)
 	# TODO no manfile yet
 	# cp $(NAME).1 /usr/local/man/man1/
 	# mandb
 	
-install-lib:
+install-lib :
 	cp lib/$(LIB) /usr/local/lib/$(LIB)
 
-run:
+run :
 	./pfmt -x 10 -y 10 -b ff0000 -f 00ff00 "Hello!"
 
-clean:
+clean :
 	$(RM) $(DISCARD)
