@@ -18,7 +18,7 @@ else
 	CC := $(CC)
 endif
 
-.PHONY: clean tst run install profile
+.PHONY : clean tst run install profile
 
 all : lib exe
 
@@ -28,7 +28,7 @@ exe : $(EXE)
 $(EXE) : $(OBJECTS)
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
-$(LIB_OBJECTS): $(LIB_SOURCES)
+$(LIB_OBJECTS) : $(LIB_SOURCES)
 	$(CC) -o $@ -fpic -c $^ $(CFLAGS) $(LDFLAGS)
 
 $(LIB) : $(LIB_OBJECTS)
@@ -44,14 +44,15 @@ install-exe :
 	# cp $(NAME).1 /usr/local/man/man1/
 	# mandb
 
-uninstall-exe:
+uninstall-exe :
 	rm /usr/local/bin/$(NAME)
 	
 install-lib :
 	cp lib/$(LIB) /usr/local/lib/$(LIB)
 
-uninstall-lib:
+uninstall-lib :
 	rm /usr/local/lib/$(LIB)
+
 run :
 	./pfmt -x 10 -y 10 -b ff0000 -f 00ff00 "Hello!"
 
