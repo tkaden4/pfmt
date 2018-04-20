@@ -52,3 +52,5 @@ void pfmt_set_position(const pfmt_pos_t *, pfmt_builder_t);
 void pfmt_reset(pfmt_builder_t);
 /* clear the screen */
 void pfmt_clear(pfmt_builder_t);
+/* clear a line */
+void pfmt_clear_line(pfmt_builder_t);

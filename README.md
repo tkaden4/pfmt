@@ -18,7 +18,7 @@ To install just the program
 `make pfmt ; make install-exe`
 
 ## CLI Usage
-`pfmt [-x|--xpos <xpos> -y|--ypos <ypos>] [-f|--fg <fg-color>] [-b|--bg <bg-color>] [-c|--clear] [strings...]`
+`pfmt [-x|--xpos <xpos> -y|--ypos <ypos>] [-f|--fg <fg-color>] [-b|--bg <bg-color>] [-c|--clear] [-k|--kill-line] [strings...]`
 
 If `strings...` is not supplied, input will be read from stdin.
 
@@ -32,6 +32,9 @@ For example, `ff0000` is red, `00ff00` is green, and `0000ff` is blue.
 
 ### -c|--clear
 Clear the screen before printing.
+
+### -k|--kill-line
+Kill the line before printing.
 
 ### strings...
 A list of arguments to be printed with the specified attributes.

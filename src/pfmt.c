@@ -59,6 +59,12 @@ void pfmt_clear(pfmt_builder_t out)
     out("2J");
 }
 
+void pfmt_clear_line(pfmt_builder_t out)
+{
+    start_attrs(out);
+    out("K");
+}
+
 void pfmt_reset(pfmt_builder_t out)
 {
     pfmt_reset_color(out);

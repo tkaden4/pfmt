@@ -37,11 +37,12 @@ enum {
 };
 
 static struct option long_opts[] = {
-    { "clear", NO_ARG,  NULL, 'c' },
-    { "xpos",  REQ_ARG, NULL, 'x' },
-    { "ypos",  REQ_ARG, NULL, 'y' },
-    { "fg",    REQ_ARG, NULL, 'f' },
-    { "bg",    REQ_ARG, NULL, 'b' },
+    { "clear",      NO_ARG,  NULL, 'c' },
+    { "kill-line",  NO_ARG,  NULL, 'k' },
+    { "xpos",       REQ_ARG, NULL, 'x' },
+    { "ypos",       REQ_ARG, NULL, 'y' },
+    { "fg",         REQ_ARG, NULL, 'f' },
+    { "bg",         REQ_ARG, NULL, 'b' },
     /* sentinel value */
     { NULL,     0, NULL, 0 }
 };
@@ -57,6 +58,7 @@ int main(int argc, char **argv)
     /* flags for each attribute */
     struct {
         int clr: 1;
+        int kill: 1;
         int pos: 1;
         int fg: 1;
         int bg: 1;
@@ -64,14 +66,18 @@ int main(int argc, char **argv)
         0,
         0,
         0,
+        0,
         0
     };
 
     int opt = EOF;
-    while((opt = getopt_long(argc, argv, "cx:y:f:b:", long_opts, NULL)) != EOF){
+    while((opt = getopt_long(argc, argv, "kcx:y:f:b:", long_opts, NULL)) != EOF){
         switch(opt){
         case 'c':
             flags.clr = 1;
+            break;
+        case 'k':
+            flags.kill = 1;
             break;
         case 'f':
             flags.fg = 1;
@@ -111,6 +117,10 @@ int main(int argc, char **argv)
     /* make sure both parts of position are specified */
     if(flags.pos){
         pfmt_set_position(&attrs.pos, out);
+    }
+    /* kill the line, if necessary */
+    if(flags.kill){
+        pfmt_clear_line(out);
     }
     /* set foreground color */
     if(flags.fg){
