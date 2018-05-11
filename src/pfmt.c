@@ -1,7 +1,17 @@
 #include<stdio.h>
 #include<stdarg.h>
+#include<stdlib.h>
+
+#include<termios.h>
+#include<unistd.h>
 
 #include<pfmt/pfmt.h>
+
+#define ufatal(fmt) ({ perror(fmt ":"); _exit(1); })
+
+/* TODO make non-global */
+static struct termios __old_termios;
+static struct termios __new_termios;
 
 /* prepare for codes */
 
@@ -9,6 +19,49 @@ static inline void start_attrs(pfmt_builder_t out)
 {
     out("\x1b[");
 }
+
+/* input functions */
+
+int pfmt_raw()
+{
+
+    if(tcgetattr(STDIN_FILENO, &__old_termios) < 0){
+        return 1;
+    }
+
+#define i __new_termios
+    i = __old_termios;
+    /* turn off control flow */
+    i.c_iflag &= ~(IXON|IXOFF);
+    /* turn off canonical mode and enable raw mode */
+    i.c_lflag &= ~(ICANON|ECHO);
+    /* wait for 1 character */
+    i.c_cc[VTIME] = 0;
+    i.c_cc[VMIN] = 1;
+    if(tcsetattr(STDIN_FILENO, TCSANOW, &i) < 0){
+        return 1;
+    }
+#undef i
+
+    /* make sure to restore terminal attributes on exit */
+    void unraw()
+    {
+        tcsetattr(STDIN_FILENO, TCSANOW, &__old_termios);
+    }
+    if(atexit(unraw)){
+        return 1;
+    }
+    return 0;
+}
+
+int pfmt_read()
+{
+    char c = '\0';
+    int rd = read(STDIN_FILENO, &c, sizeof(c));
+    return rd > 0 ? c : EOF;
+}
+
+/* output functions */
 
 /* color manipulation */
 

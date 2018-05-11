@@ -18,7 +18,7 @@
 
 /* safely parse a number from a string */
 
-int parseul(const char *str, uint32_t *res, int base)
+static int parseul(const char *str, uint32_t *res, int base)
 {
     char *end = NULL;
     uint32_t ul = strtoul(str, &end, base);
@@ -47,13 +47,16 @@ static struct option long_opts[] = {
     { NULL,     0, NULL, 0 }
 };
 
+#include<unistd.h>
+#include<fcntl.h>
+
 int main(int argc, char **argv)
 {
     /* default attributes */
     pfmt_attr_t attrs = {
         .fg = { .rgb = 0x00ffffff },
         .bg = { .rgb = 0x00000000 },
-        .pos = { .x = 10, .y = 0 }
+        .pos = { .x = 0, .y = 0 }
     };
     /* flags for each attribute */
     struct {

@@ -1,6 +1,8 @@
 #pragma once
 
 #include<stdint.h>
+#include<stdlib.h>
+#include<stdio.h>
 
 /* 24-bit color struct */
 typedef struct {
@@ -37,6 +39,21 @@ enum {
 typedef void(*pfmt_builder_t)(const char *, ...);
 
 #define pfmt_stdout_builder ((pfmt_builder_t)printf)
+
+/* dialogs */
+
+/* read text input in a full-screen dialog */
+int pfmt_text_entry(pfmt_attr_t *, const char **, size_t *);
+
+/* input functions */
+
+/* start 'raw' mode */
+int pfmt_raw();
+
+/* read input */
+int pfmt_read();
+
+/* output functions */
 
 /* print a formatted string with attributes */
 void fpprintf(FILE *, const pfmt_attr_t *, const char *, ...);

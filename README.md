@@ -1,6 +1,6 @@
 # pfmt
 
-A command line utility and library for setting text attributes.
+A command line utility and library for creating pretty printing and terminal graphics.
 
 See `examples/` for examples.
 
@@ -16,6 +16,10 @@ To install just the dynamic library
 To install just the program
 
 `make pfmt ; make install-exe`
+
+To build examples in `examples/`
+
+`make ex`
 
 ## CLI Usage
 `pfmt [-x|--xpos <xpos> -y|--ypos <ypos>] [-f|--fg <fg-color>] [-b|--bg <bg-color>] [-c|--clear] [-k|--kill-line] [strings...]`
